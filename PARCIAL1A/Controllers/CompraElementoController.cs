@@ -24,21 +24,52 @@ namespace PARCIAL1A.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompraElemento>>> GetCompraElementos()
         {
-            return await _context.CompraElementos.ToListAsync();
+            var listadoCompraElemento = (from ce in _context.CompraElementos 
+                                         join em in _context.Empresas.DefaultIfEmpty() on ce.EmpresaId equals em.EmpresaId
+                                         join el in _context.Elementos.DefaultIfEmpty() on ce.ElementoId equals el.ElementoId
+                                         select new 
+                                         { ce.CompraId,
+                                         Empresa = em.NombreEmpresa,
+                                         ce.FechaCompra,
+                                         Elemento = el.ElementoId,
+                                         ce.Cantidad,
+                                         ce.Estado,
+                                         ce.FechaCreacion,
+                                         ce.FechaModificacion
+                                         }).OrderBy(m => m.FechaCreacion);
+            if (listadoCompraElemento.Count() > 0)
+            { return Ok(listadoCompraElemento); }return NotFound();
+
+
+            //return await _context.CompraElementos.ToListAsync();
         }
 
         // GET: api/CompraElemento/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CompraElemento>> GetCompraElemento(int id)
         {
-            var compraElemento = await _context.CompraElementos.FindAsync(id);
+            var compraElemento = (from ce in _context.CompraElementos
+                                  join em in _context.Empresas.DefaultIfEmpty() on ce.EmpresaId equals em.EmpresaId
+                                  join el in _context.Elementos.DefaultIfEmpty() on ce.EmpresaId equals el.ElementoId
+                                  where id == ce.CompraId
+                                  select new
+                                  {
+                                      ce.CompraId,
+                                      Empresa = em.EmpresaId,
+                                      ce.FechaCompra,
+                                      ce.ElementoId,
+                                      ce.Cantidad,
+                                      ce.Estado,
+                                      ce.FechaCreacion,
+                                      ce.FechaModificacion
+                                  }).FirstOrDefault();
 
-            if (compraElemento == null)
+            if (compraElemento != null)
             {
-                return NotFound();
+                return Ok(compraElemento);
             }
 
-            return compraElemento;
+            return NotFound();
         }
 
         // PUT: api/CompraElemento/5
@@ -80,7 +111,7 @@ namespace PARCIAL1A.Controllers
             _context.CompraElementos.Add(compraElemento);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCompraElemento", new { id = compraElemento.CompraId }, compraElemento);
+            return Ok(compraElemento);
         }
 
         // DELETE: api/CompraElemento/5
