@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PARCIAL1A.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,10 @@ namespace PARCIAL1A
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<PARCIAL1AContext>(options =>
+                                            options.UseSqlServer(
+                                                    Configuration.GetConnectionString("dbConnection")
+                                                ));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
