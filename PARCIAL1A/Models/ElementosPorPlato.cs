@@ -15,5 +15,9 @@ namespace PARCIAL1A.Models
         public string Estado { get; set; }
         public DateTime? FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }
+
+        public virtual Elemento Elemento { get; set; }
+        public virtual Empresa Empresa { get; set; }
+        public virtual Plato Plato { get; set; }
     }
 }

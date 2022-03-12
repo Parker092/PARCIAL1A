@@ -7,6 +7,12 @@ namespace PARCIAL1A.Models
 {
     public partial class Elemento
     {
+        public Elemento()
+        {
+            CompraElementos = new HashSet<CompraElemento>();
+            ElementosPorPlatos = new HashSet<ElementosPorPlato>();
+        }
+
         public int ElementoId { get; set; }
         public int? EmpresaId { get; set; }
         public string Elemento1 { get; set; }
@@ -16,5 +22,9 @@ namespace PARCIAL1A.Models
         public string Estado { get; set; }
         public DateTime? FechaModificacion { get; set; }
         public int? Inventario { get; set; }
+
+        public virtual Empresa Empresa { get; set; }
+        public virtual ICollection<CompraElemento> CompraElementos { get; set; }
+        public virtual ICollection<ElementosPorPlato> ElementosPorPlatos { get; set; }
     }
 }

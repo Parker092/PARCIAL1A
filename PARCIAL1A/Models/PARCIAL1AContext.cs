@@ -40,7 +40,7 @@ namespace PARCIAL1A.Models
             modelBuilder.Entity<CompraElemento>(entity =>
             {
                 entity.HasKey(e => e.CompraId)
-                    .HasName("PK__CompraEl__067DA725B9AD4F59");
+                    .HasName("PK__CompraEl__067DA7256E5CE030");
 
                 entity.Property(e => e.CompraId).HasColumnName("CompraID");
 
@@ -57,6 +57,16 @@ namespace PARCIAL1A.Models
                 entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
 
                 entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Elemento)
+                    .WithMany(p => p.CompraElementos)
+                    .HasForeignKey(d => d.ElementoId)
+                    .HasConstraintName("FK_compra_elementos");
+
+                entity.HasOne(d => d.Empresa)
+                    .WithMany(p => p.CompraElementos)
+                    .HasForeignKey(d => d.EmpresaId)
+                    .HasConstraintName("FK_compra_empresa");
             });
 
             modelBuilder.Entity<Elemento>(entity =>
@@ -81,12 +91,17 @@ namespace PARCIAL1A.Models
                 entity.Property(e => e.UnidadMedida)
                     .HasMaxLength(1)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Empresa)
+                    .WithMany(p => p.Elementos)
+                    .HasForeignKey(d => d.EmpresaId)
+                    .HasConstraintName("FK_elemento_empresa");
             });
 
             modelBuilder.Entity<ElementosPorPlato>(entity =>
             {
                 entity.HasKey(e => e.ElementoPorPlatoId)
-                    .HasName("PK__Elemento__C62841346B4BBD3A");
+                    .HasName("PK__Elemento__C628413461710061");
 
                 entity.ToTable("ElementosPorPlato");
 
@@ -105,6 +120,21 @@ namespace PARCIAL1A.Models
                 entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
 
                 entity.Property(e => e.PlatoId).HasColumnName("PlatoID");
+
+                entity.HasOne(d => d.Elemento)
+                    .WithMany(p => p.ElementosPorPlatos)
+                    .HasForeignKey(d => d.ElementoId)
+                    .HasConstraintName("FK_elementos_plato_elementos");
+
+                entity.HasOne(d => d.Empresa)
+                    .WithMany(p => p.ElementosPorPlatos)
+                    .HasForeignKey(d => d.EmpresaId)
+                    .HasConstraintName("FK_elementos_empresa");
+
+                entity.HasOne(d => d.Plato)
+                    .WithMany(p => p.ElementosPorPlatos)
+                    .HasForeignKey(d => d.PlatoId)
+                    .HasConstraintName("FK_elementos_plato");
             });
 
             modelBuilder.Entity<Empresa>(entity =>
@@ -178,8 +208,6 @@ namespace PARCIAL1A.Models
 
                 entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
 
-                entity.Property(e => e.GrupoId).HasColumnName("GrupoID");
-
                 entity.Property(e => e.Imagen)
                     .HasMaxLength(200)
                     .IsUnicode(false);
@@ -219,6 +247,11 @@ namespace PARCIAL1A.Models
                 entity.Property(e => e.Viernes)
                     .HasMaxLength(200)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Empresa)
+                    .WithMany(p => p.Platos)
+                    .HasForeignKey(d => d.EmpresaId)
+                    .HasConstraintName("FK_plato_empresa");
             });
 
             modelBuilder.Entity<PlatosPorCombo>(entity =>
@@ -226,8 +259,6 @@ namespace PARCIAL1A.Models
                 entity.ToTable("PlatosPorCombo");
 
                 entity.Property(e => e.PlatosPorComboId).HasColumnName("PlatosPorComboID");
-
-                entity.Property(e => e.ComboId).HasColumnName("ComboID");
 
                 entity.Property(e => e.EmpresaId).HasColumnName("EmpresaID");
 
@@ -240,6 +271,16 @@ namespace PARCIAL1A.Models
                 entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
 
                 entity.Property(e => e.PlatoId).HasColumnName("PlatoID");
+
+                entity.HasOne(d => d.Empresa)
+                    .WithMany(p => p.PlatosPorCombos)
+                    .HasForeignKey(d => d.EmpresaId)
+                    .HasConstraintName("FK_plato_combo_empresa");
+
+                entity.HasOne(d => d.Plato)
+                    .WithMany(p => p.PlatosPorCombos)
+                    .HasForeignKey(d => d.PlatoId)
+                    .HasConstraintName("FK_plato_combo_plato");
             });
 
             OnModelCreatingPartial(modelBuilder);
