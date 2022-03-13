@@ -24,7 +24,7 @@ namespace PARCIAL1A.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Plato>>> GetPlatos()
         {
-            return await _context.Platos.Include( p => p.Empresa.NombreEmpresa ).ToListAsync();
+            return await _context.Platos.Include( p => p.Empresa ).ToListAsync();
         }
 
         // GET: api/Platos/5
