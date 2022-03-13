@@ -11,29 +11,30 @@ namespace PARCIAL1A.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PlatosPorComboController : ControllerBase
+    public class ElementosPorPlatoController : ControllerBase
     {
         private readonly PARCIAL1AContext _context;
 
-        public PlatosPorComboController(PARCIAL1AContext context)
+        public ElementosPorPlatoController(PARCIAL1AContext context)
         {
             _context = context;
         }
 
-        // GET: api/PlatosPorCombo
+        // GET: api/ElementosPorPlato
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PlatosPorCombo>>> GetPlatosPorCombos()
+        public async Task<ActionResult<IEnumerable<ElementosPorPlato>>> GetElementosPorPlatos()
         {
-            var list = (from ep in _context.PlatosPorCombos
+            var list = (from ep in _context.ElementosPorPlatos
                         join e in _context.Platos on ep.PlatoId equals e.PlatoId
                         select new
                         {
-                            ep.PlatosPorComboId,
-                            Plato = e.NombrePlato,                            
+                            ep.ElementoPorPlatoId,
+                            Plato = e.NombrePlato,
+                            ep.Cantidad,
                             ep.Estado,
                             ep.FechaCreacion,
                             ep.FechaModificacion,
-                        }).OrderBy(p => p.PlatosPorComboId);
+                        }).OrderBy(p => p.ElementoPorPlatoId);
 
             if (list.Count() > 0)
             {
@@ -43,23 +44,24 @@ namespace PARCIAL1A.Controllers
             return NotFound();
         }
 
-        // GET: api/PlatosPorCombo/5
+        // GET: api/ElementosPorPlato/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PlatosPorCombo>> GetPlatosPorCombo(int id)
+        public async Task<ActionResult<ElementosPorPlato>> GetElementosPorPlato(int id)
         {
-            var list = (from ep in _context.PlatosPorCombos
+            var list = (from ep in _context.ElementosPorPlatos
                         join e in _context.Platos on ep.PlatoId equals e.PlatoId
-                        where id == ep.PlatosPorComboId
+                        where id == ep.ElementoPorPlatoId
                         select new
                         {
-                            ep.PlatosPorComboId,
+                            ep.ElementoPorPlatoId,
                             Plato = e.NombrePlato,
+                            ep.Cantidad,
                             ep.Estado,
                             ep.FechaCreacion,
                             ep.FechaModificacion,
                         }).FirstOrDefault();
 
-            if (list != null)
+            if (list!= null)
             {
                 return Ok(list);
             }
@@ -67,17 +69,17 @@ namespace PARCIAL1A.Controllers
             return NotFound();
         }
 
-        // PUT: api/PlatosPorCombo/5
+        // PUT: api/ElementosPorPlato/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlatosPorCombo(int id, PlatosPorCombo platosPorCombo)
+        public async Task<IActionResult> PutElementosPorPlato(int id, ElementosPorPlato elementosPorPlato)
         {
-            if (id != platosPorCombo.PlatosPorComboId)
+            if (id != elementosPorPlato.ElementoPorPlatoId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(platosPorCombo).State = EntityState.Modified;
+            _context.Entry(elementosPorPlato).State = EntityState.Modified;
 
             try
             {
@@ -85,7 +87,7 @@ namespace PARCIAL1A.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PlatosPorComboExists(id))
+                if (!ElementosPorPlatoExists(id))
                 {
                     return NotFound();
                 }
@@ -98,36 +100,36 @@ namespace PARCIAL1A.Controllers
             return NoContent();
         }
 
-        // POST: api/PlatosPorCombo
+        // POST: api/ElementosPorPlato
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<PlatosPorCombo>> PostPlatosPorCombo(PlatosPorCombo platosPorCombo)
+        public async Task<ActionResult<ElementosPorPlato>> PostElementosPorPlato(ElementosPorPlato elementosPorPlato)
         {
-            _context.PlatosPorCombos.Add(platosPorCombo);
+            _context.ElementosPorPlatos.Add(elementosPorPlato);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPlatosPorCombo", new { id = platosPorCombo.PlatosPorComboId }, platosPorCombo);
+            return CreatedAtAction("GetElementosPorPlato", new { id = elementosPorPlato.ElementoPorPlatoId }, elementosPorPlato);
         }
 
-        // DELETE: api/PlatosPorCombo/5
+        // DELETE: api/ElementosPorPlato/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlatosPorCombo(int id)
+        public async Task<IActionResult> DeleteElementosPorPlato(int id)
         {
-            var platosPorCombo = await _context.PlatosPorCombos.FindAsync(id);
-            if (platosPorCombo == null)
+            var elementosPorPlato = await _context.ElementosPorPlatos.FindAsync(id);
+            if (elementosPorPlato == null)
             {
                 return NotFound();
             }
 
-            _context.PlatosPorCombos.Remove(platosPorCombo);
+            _context.ElementosPorPlatos.Remove(elementosPorPlato);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool PlatosPorComboExists(int id)
+        private bool ElementosPorPlatoExists(int id)
         {
-            return _context.PlatosPorCombos.Any(e => e.PlatosPorComboId == id);
+            return _context.ElementosPorPlatos.Any(e => e.ElementoPorPlatoId == id);
         }
     }
 }

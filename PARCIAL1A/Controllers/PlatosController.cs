@@ -24,12 +24,10 @@ namespace PARCIAL1A.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Plato>>> GetPlatos()
         {
-            var list = (from p in _context.Platos
-                        join e in _context.Empresas on p.EmpresaId equals e.EmpresaId
+            var list = (from p in _context.Platos                        
                         select new
                         {
-                            p.PlatoId,
-                            Empresa = e.NombreEmpresa,
+                            p.PlatoId,                           
                             p.NombrePlato,
                             p.DescripcionPlato,
                             p.Precio,
@@ -69,13 +67,11 @@ namespace PARCIAL1A.Controllers
 
             //return plato;
 
-            var list = (from p in _context.Platos
-                        join e in _context.Empresas on p.EmpresaId equals e.EmpresaId
+            var list = (from p in _context.Platos                     
                         where p.PlatoId == id
                         select new
                         {
-                            p.PlatoId,
-                            e.NombreEmpresa,
+                            p.PlatoId,                          
                             p.NombrePlato,
                             p.DescripcionPlato,
                             p.Precio,

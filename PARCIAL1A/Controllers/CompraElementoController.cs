@@ -24,21 +24,24 @@ namespace PARCIAL1A.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompraElemento>>> GetCompraElementos()
         {
-            var listadoCompraElemento = (from ce in _context.CompraElementos 
-                                         join em in _context.Empresas.DefaultIfEmpty() on ce.EmpresaId equals em.EmpresaId
-                                         join el in _context.Elementos.DefaultIfEmpty() on ce.ElementoId equals el.ElementoId
+            var listadoCompraElemento = (from ce in _context.CompraElementos
+                                         join e in _context.Empresas on ce.EmpresaId equals e.EmpresaId
+                                       //  join el in _context.Elementos on ce.ElementoId equals el.ElementoId
                                          select new 
                                          { ce.CompraId,
-                                         Empresa = em.NombreEmpresa,
-                                         ce.FechaCompra,
-                                         Elemento = el.ElementoId,
+                                           Empresa = e.NombreEmpresa,
+                                           ce.FechaCompra,
+                                          // Elemento = el.Elemento1,
                                          ce.Cantidad,
                                          ce.Estado,
                                          ce.FechaCreacion,
                                          ce.FechaModificacion
                                          }).OrderBy(m => m.FechaCreacion);
             if (listadoCompraElemento.Count() > 0)
-            { return Ok(listadoCompraElemento); }return NotFound();
+            { 
+                return Ok(listadoCompraElemento); 
+            }
+            return NotFound();
 
 
             //return await _context.CompraElementos.ToListAsync();
@@ -49,15 +52,15 @@ namespace PARCIAL1A.Controllers
         public async Task<ActionResult<CompraElemento>> GetCompraElemento(int id)
         {
             var compraElemento = (from ce in _context.CompraElementos
-                                  join em in _context.Empresas.DefaultIfEmpty() on ce.EmpresaId equals em.EmpresaId
-                                  join el in _context.Elementos.DefaultIfEmpty() on ce.EmpresaId equals el.ElementoId
+                                  join e in _context.Empresas on ce.EmpresaId equals e.EmpresaId
+                                 //join el in _context.Elementos on ce.ElementoId equals el.ElementoId
                                   where id == ce.CompraId
                                   select new
                                   {
                                       ce.CompraId,
-                                      Empresa = em.EmpresaId,
+                                      Empresa = e.NombreEmpresa,
                                       ce.FechaCompra,
-                                      ce.ElementoId,
+                                    //  ce.ElementoId,
                                       ce.Cantidad,
                                       ce.Estado,
                                       ce.FechaCreacion,
