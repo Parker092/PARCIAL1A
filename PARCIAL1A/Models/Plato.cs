@@ -14,7 +14,6 @@ namespace PARCIAL1A.Models
         }
 
         public int PlatoId { get; set; }
-        public int? EmpresaId { get; set; }
         public string NombrePlato { get; set; }
         public string DescripcionPlato { get; set; }
         public string Precio { get; set; }
@@ -32,7 +31,6 @@ namespace PARCIAL1A.Models
         public DateTime? FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }
 
-        public virtual Empresa Empresa { get; set; }
         public virtual ICollection<ElementosPorPlato> ElementosPorPlatos { get; set; }
         public virtual ICollection<PlatosPorCombo> PlatosPorCombos { get; set; }
     }
