@@ -69,6 +69,30 @@ namespace PARCIAL1A.Controllers
             return NotFound();
         }
 
+        [HttpGet("search/{param}")]
+        public async Task<ActionResult<ElementosPorPlato>> GetElementosPorPlatoNombre(string param)
+        {
+            var list = (from ep in _context.ElementosPorPlatos
+                        join e in _context.Platos on ep.PlatoId equals e.PlatoId
+                        where e.NombrePlato==param
+                        select new
+                        {
+                            ep.ElementoPorPlatoId,
+                            Plato = e.NombrePlato,
+                            ep.Cantidad,
+                            ep.Estado,
+                            ep.FechaCreacion,
+                            ep.FechaModificacion,
+                        }).FirstOrDefault();
+
+            if (list != null)
+            {
+                return Ok(list);
+            }
+
+            return NotFound();
+        }
+
         // PUT: api/ElementosPorPlato/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

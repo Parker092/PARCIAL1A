@@ -98,6 +98,49 @@ namespace PARCIAL1A.Controllers
             return NotFound();
         }
 
+        //[HttpGet("search/{param}")]
+        //public async Task<ActionResult<Plato>> GetElemetoPlato(string param)
+        //{
+        //    //var plato = await _context.Platos.FindAsync(id);
+
+        //    //if (plato == null)
+        //    //{
+        //    //    return NotFound();
+        //    //}
+
+        //    //return plato;
+
+        //    var list = (from p in _context.Platos
+        //                where p.NombrePlato.Contains(param)
+        //                select new
+        //                {
+        //                    p.PlatoId,
+        //                    p.NombrePlato,
+        //                    p.DescripcionPlato,
+        //                    p.Precio,
+        //                    p.TiempoPreparacion,
+        //                    p.Imagen,
+        //                    p.AplicaPropina,
+        //                    p.Lunes,
+        //                    p.Martes,
+        //                    p.Miercoles,
+        //                    p.Jueves,
+        //                    p.Viernes,
+        //                    p.Sabado,
+        //                    p.Domingo,
+        //                    p.Estado,
+        //                    p.FechaCreacion,
+        //                    p.FechaModificacion,
+        //                }).FirstOrDefault();
+
+        //    if (list != null)
+        //    {
+        //        return Ok(list);
+        //    }
+
+        //    return NotFound();
+        //}
+
         // PUT: api/Platos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
