@@ -33,6 +33,9 @@ namespace PARCIAL1A
                                                     Configuration.GetConnectionString("dbConnection")
                                                 ));
 
+            services.AddControllers().AddJsonOptions(x =>
+                                    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
