@@ -24,21 +24,82 @@ namespace PARCIAL1A.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Plato>>> GetPlatos()
         {
-            return await _context.Platos.Include( p => p.Empresa ).ToListAsync();
+            var list = (from p in _context.Platos
+                        join e in _context.Empresas on p.EmpresaId equals e.EmpresaId
+                        select new
+                        {
+                            p.PlatoId,
+                            Empresa = e.NombreEmpresa,
+                            p.NombrePlato,
+                            p.DescripcionPlato,
+                            p.Precio,
+                            p.TiempoPreparacion,
+                            p.Imagen,
+                            p.AplicaPropina,
+                            p.Lunes,
+                            p.Martes,
+                            p.Miercoles,
+                            p.Jueves,
+                            p.Viernes,
+                            p.Sabado,
+                            p.Domingo,
+                            p.Estado,
+                            p.FechaCreacion,
+                            p.FechaModificacion,
+                        }).OrderBy(p => p.PlatoId);
+
+            if (list.Count() > 0)
+            {
+                return Ok(list);
+            }
+
+            return NotFound();
         }
 
         // GET: api/Platos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Plato>> GetPlato(int id)
         {
-            var plato = await _context.Platos.FindAsync(id);
+            //var plato = await _context.Platos.FindAsync(id);
 
-            if (plato == null)
+            //if (plato == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return plato;
+
+            var list = (from p in _context.Platos
+                        join e in _context.Empresas on p.EmpresaId equals e.EmpresaId
+                        where p.PlatoId == id
+                        select new
+                        {
+                            p.PlatoId,
+                            e.NombreEmpresa,
+                            p.NombrePlato,
+                            p.DescripcionPlato,
+                            p.Precio,
+                            p.TiempoPreparacion,
+                            p.Imagen,
+                            p.AplicaPropina,
+                            p.Lunes,
+                            p.Martes,
+                            p.Miercoles,
+                            p.Jueves,
+                            p.Viernes,
+                            p.Sabado,
+                            p.Domingo,
+                            p.Estado,
+                            p.FechaCreacion,
+                            p.FechaModificacion,
+                        }).FirstOrDefault();
+
+            if (list != null)
             {
-                return NotFound();
+                return Ok(list);
             }
 
-            return plato;
+            return NotFound();
         }
 
         // PUT: api/Platos/5
